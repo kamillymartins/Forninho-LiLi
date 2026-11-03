@@ -80,6 +80,19 @@ h2{font-size:clamp(1.8rem,5vw,2.6rem);color:var(--choc);text-align:center}
 .info div{background:var(--card);border-radius:20px;padding:20px;border:3px solid var(--pale)}
 .info h3{font-size:1rem;color:var(--choc);margin-bottom:6px}
 .info p{margin:0}
+.story{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:40px;align-items:center;max-width:920px;margin:0 auto}
+.portrait{position:relative;aspect-ratio:4/5;border-radius:200px 200px 24px 24px;border:4px solid var(--choc);background:var(--pink);display:grid;place-items:center;overflow:hidden;font-size:5.5rem}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.story h2{text-align:left}
+.story p{margin:14px 0 0;max-width:56ch}
+.story ul{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.story li{background:var(--card);border:3px solid var(--pale);border-radius:999px;padding:6px 16px;font-weight:600;font-size:.95rem}
+.story .sig{font-family:var(--head);font-weight:700;color:var(--choc);font-size:1.6rem}
+.ph{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--pale);display:grid;place-items:center}
+.item:nth-child(3n+2) .ph{background:var(--pink)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.item .ph .ico{background:none;width:auto;height:auto;font-size:3.6rem}
+@media (max-width:720px){.story{grid-template-columns:1fr;gap:28px}.portrait{max-width:250px;margin:0 auto}.story h2{text-align:center}}
 footer{text-align:center;padding:30px 20px 40px;font-size:.9rem;border-top:3px solid var(--pale)}
 @media (max-width:560px){.d1{left:-8px}.d2{right:-4px}.d3{display:none}}
 </style>
@@ -88,9 +101,9 @@ footer{text-align:center;padding:30px 20px 40px;font-size:.9rem;border-top:3px s
 
 <div class="awning" aria-hidden="true"></div>
 <nav aria-label="Principal">
+  <a href="#sobre">A Lili</a>
   <a href="#cardapio">Cardápio</a>
   <a href="#encomendas">Encomendas</a>
-  <a href="#sobre">A Lili</a>
   <a href="#contato">Contato</a>
 </nav>
 
@@ -101,12 +114,24 @@ footer{text-align:center;padding:30px 20px 40px;font-size:.9rem;border-top:3px s
       <span class="deco d3" aria-hidden="true">🍒</span>
       <h1>Forninho da Lili</h1>
       <p>Bolos, cupcakes e docinhos feitos na hora, com carinho e muito açúcar.</p>
-      <a class="btn" href="#cardapio">Ver cardápio</a>
+      <a class="btn" href="#sobre">Conheça a Lili</a>
       <span class="deco d1" aria-hidden="true">🍰</span>
       <span class="deco d2" aria-hidden="true">🧁</span>
     </div>
   </div>
 </header>
+
+<section id="sobre">
+  <div class="wrap story">
+    <div class="portrait"><span aria-hidden="true">👩‍🍳</span><img src="fotos/lili.jpg" alt="A Lili no forninho" onerror="this.remove()"></div>
+    <div>
+      <h2>Oi, eu sou a Lili!</h2>
+      <p>Desde pequena eu rondava o fogão enquanto alguém fazia bolo. Com o tempo, a brincadeira virou paixão, e a paixão virou o Forninho da Lili.</p>
+      <p>Hoje faço cada encomenda em pequenas fornadas, com receitas que aprendi em casa e ingredientes de verdade. Meu objetivo é simples: que o seu bolo seja a parte mais bonita e mais gostosa da festa.</p>
+      <ul><li>Receitas de família</li><li>Pequenas fornadas</li><li>Ingredientes de verdade</li><li>Decoração caprichada</li></ul>
+    </div>
+  </div>
+</section>
 
 <section id="cardapio">
   <div class="wrap">
@@ -135,14 +160,6 @@ footer{text-align:center;padding:30px 20px 40px;font-size:.9rem;border-top:3px s
   </div>
 </section>
 
-<section id="sobre">
-  <div class="wrap about">
-    <div>
-      <h2>A Lili</h2>
-      <p>O Forninho da Lili nasceu na cozinha de casa, com receitas de família e a vontade de transformar cada festa em algo doce de lembrar. Tudo é feito em pequenas fornadas, com ingredientes de verdade e decoração caprichada.</p>
-    </div>
-  </div>
-</section>
 
 <section id="contato" style="padding-top:0">
   <div class="wrap">
@@ -170,10 +187,11 @@ var itens=[
  ["🍪","Cookies recheados","Caixa com 6 unidades.","docinhos","R$ 32"],
  ["🍩","Brownie","Casquinha crocante e miolo macio.","docinhos","R$ 8"]
 ];
+function slug(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-")}
 var grid=document.getElementById("grid");
 grid.innerHTML=itens.map(function(i){
   var msg=encodeURIComponent("Oi, Lili! Quero pedir: "+i[1]);
-  return '<article class="item" data-c="'+i[3]+'"><div class="ico" aria-hidden="true">'+i[0]+'</div><h3>'+i[1]+'</h3><p>'+i[2]+'</p><div class="row"><span>'+i[4]+'</span><a href="https://wa.me/5511999999999?text='+msg+'">Pedir</a></div></article>';
+  return '<article class="item" data-c="'+i[3]+'"><div class="ph"><span class="ico" aria-hidden="true">'+i[0]+'</span><img src="fotos/'+slug(i[1])+'.jpg" alt="'+i[1]+'" loading="lazy" onerror="this.remove()"></div><h3>'+i[1]+'</h3><p>'+i[2]+'</p><div class="row"><span>'+i[4]+'</span><a href="https://wa.me/5511999999999?text='+msg+'">Pedir</a></div></article>';
 }).join("");
 document.querySelectorAll(".tab").forEach(function(b){
   b.addEventListener("click",function(){
